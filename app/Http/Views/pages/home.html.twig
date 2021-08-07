@@ -1,0 +1,51 @@
+{% extends 'layouts/main.html.twig' %}
+
+{% block body %}
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">
+                <a  class="" role="button" aria-pressed="true" href="{{ name_sort_link }}">Имя</a>
+            </th>
+            <th scope="col">
+                <a  class="" role="button" aria-pressed="true" href="{{ email_sort_link }}">Email</a>
+            </th>
+            <th scope="col">Текст</th>
+            <th scope="col">
+                <a  class="" role="button" aria-pressed="true" href="{{ status_sort_link }}">Статус</a>
+            </th>
+            {% if is_authorized %}
+                <th scope="col"></th>
+            {%  endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+            <tr class=" {% if task.status %} table-success {% else %} table-primary {% endif %}">
+                    <th scope="row">{{ task.id }}</th>
+                    <td>{{ task.user.username }}</td>
+                    <td>{{ task.user.email }}</td>
+                    <td>{{ task.text }}</td>
+                {% if task.status %}
+                    <td><img title="Выполнено" src="./resources/icons/calendar-check.svg"/>{% if task.is_admined %} <img  title="Отредактировано администратором" src="./resources/icons/exclamation-circle.svg"/> {% endif %}  </td>
+                {% else %}
+                    <td><img title="Невыполнено" src="./resources/icons/calendar-x.svg"/> {% if task.is_admined %} <img title="Отредактировано администратором" src="./resources/icons/exclamation-circle.svg"/> {% endif %}  </td>
+                {% endif %}
+                {% if is_authorized %}
+                    <td><a class="nav-link" href="/task/update?id={{ task.id }}"><img src="./resources/icons/pencil.svg"/></a></td>
+                {%  endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if not is_first %}
+        <a  class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href="{{ previous_page_url }}">Previously</a>
+    {% endif %}
+    {% if  is_last %}
+        <a  class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href="{{ next_page_url }}">Next</a>
+    {% endif %}
+
+
+{% endblock %}

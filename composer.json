@@ -1,0 +1,26 @@
+{
+    "name": "vinniko/mvc",
+    "autoload": {
+        "psr-4": {
+            "System\\": "System",
+            "App\\": "app"
+        }
+    },
+    "authors": [
+        {
+            "name": "Aleksei Vinnik",
+            "email": "vinnik_21@bk.ru"
+        }
+    ],
+    "require": {
+        "larapack/dd": "1.*",
+        "symfony/finder": "^5.3",
+        "symfony/http-foundation": "^5.3",
+        "illuminate/database": "^8.53",
+        "symfony/dotenv": "^5.3",
+        "twig/twig": "^3.3",
+        "twbs/bootstrap": "5.0.2",
+        "illuminate/pagination": "^8.53",
+        "josantonius/session": "^1.1"
+    }
+}
