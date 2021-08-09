@@ -25,8 +25,8 @@
         {% for task in tasks %}
             <tr class=" {% if task.status %} table-success {% else %} table-primary {% endif %}">
                     <th scope="row">{{ task.id }}</th>
-                    <td>{{ task.user.username }}</td>
-                    <td>{{ task.user.email }}</td>
+                    <td>{{ task.username }}</td>
+                    <td>{{ task.email }}</td>
                     <td>{{ task.text }}</td>
                 {% if task.status %}
                     <td><img title="Выполнено" src="./resources/icons/calendar-check.svg"/>{% if task.is_admined %} <img  title="Отредактировано администратором" src="./resources/icons/exclamation-circle.svg"/> {% endif %}  </td>

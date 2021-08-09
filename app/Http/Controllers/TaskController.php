@@ -18,13 +18,13 @@ class TaskController extends Controller
 
     public function index()
     {
-        $tasks = Task::with('user');
+        $tasks = new Task();
         $page = $this->request->query->has('page') ? $this->request->query->get('page') : null;
         $sort = $this->request->query->has('sort') ? $this->request->query->get('sort') : null;
         $direction = $this->request->query->has('direction') ? $this->request->query->get('direction') : null;
 
         if ($direction && $sort) {
-            $tasks->orderBy(User::select($sort)->whereColumn('tasks.user_id', 'users.id'), $direction);
+            $tasks = $tasks->orderBy($sort, $direction);
         }
 
         if ($page) {
@@ -54,11 +54,9 @@ class TaskController extends Controller
 
     public function create(string $message = null)
     {
-        $users = User::select('username')->get();
         $message = $this->request->query->has('message') ? $this->request->query->get('message') : null;
 
         return $this->twig->render('pages/task.create.html.twig', [
-            'users' => $users,
             'is_authorized' => Session::get('status'),
             'message' => $message,
         ]);
@@ -68,7 +66,8 @@ class TaskController extends Controller
     {
         $parameters = $this->request->request;
         Task::create([
-            'user_id' => User::where('username', $parameters->get('username'))->first()->id,
+            'username' => htmlspecialchars($parameters->get('username')),
+            'email' => htmlspecialchars($parameters->get('email')),
             'text' => htmlspecialchars($parameters->get('text')),
             'status' => $parameters->get('is_complete') == 'on',
         ]);
@@ -86,16 +85,13 @@ class TaskController extends Controller
         $task_id = $this->request->query->has('id')
             ? $this->request->query->get('id')
             : Redirector::redirect('/home');
-        $task = Task::with('user')->find($task_id);
-        $users = User::select('username')->get();
+        $task = Task::find($task_id);
         $message = $this->request->query->has('message') ? $this->request->query->get('message') : null;
 
         return $this->twig->render('pages/task.update.html.twig', [
-            'users' => $users,
             'is_authorized' => Session::get('status'),
             'message' => $message,
-            'task' => $task,
-            'q' => "q"
+            'task' => $task
         ]);
     }
 
@@ -108,9 +104,9 @@ class TaskController extends Controller
         $parameters = $this->request->request;
         $task = Task::find($parameters->get('id'));
 
-        $task->user_id = User::where('username', $parameters->get('username'))->first()->id;
+        $task->username = htmlspecialchars($parameters->get('username'));
+        $task->email = htmlspecialchars($parameters->get('email'));
         $task->status = $parameters->get('is_complete') == 'on';
-
 
         if ($task->text != htmlspecialchars($parameters->get('text'))) {
             $task->text = htmlspecialchars($parameters->get('text'));

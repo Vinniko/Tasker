@@ -3,19 +3,21 @@
 {% block body %}
 
     <form action="../task/store" class="row g-3 needs-validation" method="POST" validate>
-        <div class="col-md-4">
-            <label for="validationCustom04" class="form-label">Пользователь</label>
-            <select class="form-select" id="validationCustom04" name="username" required>
-                <option selected disabled value="">Choose...</option>
-                {% for user in users %}
-                    <option>{{ user.username }}</option>
-                {% endfor %}
-            </select>
+        <div class="col-md-6">
+            <label for="validationCustom03" class="form-label">Имя пользователя</label>
+            <input type="text" class="form-control" id="validationCustom01" name="username" required>
             <div class="invalid-feedback">
-                Please select a valid username.
+                Please provide a valid username.
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-6">
+            <label for="validationCustom03" class="form-label">Email</label>
+            <input type="email" class="form-control" id="validationCustom02" name="email" required>
+            <div class="invalid-feedback">
+                Please provide a valid email.
+            </div>
+        </div>
+        <div class="col-md-12">
             <label for="validationCustom03" class="form-label">Текст</label>
             <input type="text" class="form-control" id="validationCustom03" name="text" required>
             <div class="invalid-feedback">
